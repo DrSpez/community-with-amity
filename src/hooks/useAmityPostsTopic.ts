@@ -5,7 +5,9 @@ import {
   subscribeTopic,
   SubscriptionLevels,
 } from "@amityco/ts-sdk";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useAmityAuthState } from "../providers/AmityAuthProvider";
 
 const disposers: Amity.Unsubscriber[] = [];
 let isSubscribed = false;
@@ -39,17 +41,17 @@ const subscribePostTopic = (targetType: string, targetId: string) => {
 };
 
 const useAmityPostsTopic = ({
-  isConnected,
   targetId,
   targetType,
 }: {
-  isConnected: boolean;
   targetId: string;
   targetType: string;
 }) => {
   const [posts, setPosts] = useState<Amity.Post[]>();
   const [hasMore, setHasMore] = useState<boolean>();
   const [onLoadMoreObj, setOnLoadMoreObj] = useState<any>({});
+
+  const { isConnected } = useAmityAuthState();
 
   useEffect(() => {
     if (isConnected) {
