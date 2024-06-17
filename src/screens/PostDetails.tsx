@@ -11,6 +11,7 @@ const PostDetails = () => {
   const { postID } = useParams();
   const { post } = useAmityPostTopic({ postID: postID || "" });
   const isLoading = !post || !postID;
+
   if (isLoading) return null;
   return (
     <div className="App white-text">

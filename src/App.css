@@ -39,6 +39,9 @@
   padding: 10px 20px;
   margin-top: 10px;
 }
+.remove-button {
+  max-height: 20px;
+}
 
 .space-top {
   margin-top: 8px;

@@ -33,13 +33,17 @@ function App() {
         <div className="column-third">
           <UserInfo userID={userID} displayName={displayName} />
           <PostCreator userID={userID} tags={tags} />
-          {posts?.map((post) => (
-            <Post
-              key={`${post._id}-${post.creator.userId}`}
-              post={post}
-              showDetailsLink
-            />
-          ))}
+          {posts?.map((post) => {
+            const isOwnPost = post.creator?.userId === String(userID);
+            return (
+              <Post
+                key={`${post._id}-${post.creator.userId}`}
+                post={post}
+                showDetailsLink
+                showRemoveButton={isOwnPost}
+              />
+            );
+          })}
           {hasMore && (
             <button onClick={onLoadMore} className="space-top">
               Load more
