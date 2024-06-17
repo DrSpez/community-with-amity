@@ -22,8 +22,8 @@ const PostDetails = () => {
         <div className="column-third">
           <p>Post ID: {postID} </p>
           <Post post={post} />
-          <PostComments postID={postID} />
           <CommentCreator postID={postID} />
+          <PostComments postID={postID} />
         </div>
       </div>
     </div>

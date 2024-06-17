@@ -42,7 +42,12 @@ const Post = ({
           </button>
         )}
       </div>
-      <ReactionButton post={post} reactionType="like" />
+      <ReactionButton
+        referenceID={post._id}
+        referenceType={"post"}
+        myReactions={post.myReactions}
+        reactionType="like"
+      />
       {showDetailsLink && (
         <button
           className="space-top"

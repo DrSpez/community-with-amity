@@ -48,11 +48,16 @@ const subscribeCommentTopic = (
 };
 
 const useAmityCommentsTopic = ({ postID }: { postID: string }) => {
-  const [commentsData, setCommentsData] =
-    useState<Amity.InternalComment<any>[]>();
+  const [commentsData, setCommentsData] = useState<Amity.InternalComment[]>();
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [onLoadMoreObj, setOnLoadMoreObj] = useState<{
+    onLoadMore: (() => void) | undefined;
+  }>({
+    onLoadMore: () => alert("DEFAULT! Should never happen"),
+  });
 
-  const { isConnected } = useAmityAuthState();
-  const { user } = useAmityUser();
+  const { isConnected, userID } = useAmityAuthState();
+  const { user } = useAmityUser({ userID });
   const { community } = useAmityCommunity({ communityID: AMITY_COMMUNITY_ID });
 
   useEffect(() => {
@@ -140,12 +145,15 @@ const useAmityCommentsTopic = ({ postID }: { postID: string }) => {
           values: ["text"],
           matchType: "exact",
         },
+        limit: 5,
       };
 
       const unsubscribe = CommentRepository.getComments(
         textOnlyParam,
         ({ data: comments, onNextPage, hasNextPage, loading, error }) => {
           setCommentsData(comments);
+          setHasMore(hasNextPage || false);
+          setOnLoadMoreObj({ onLoadMore: onNextPage });
           /*
            * this is only required if you want real time updates for each
            * community in the collection
@@ -167,7 +175,11 @@ const useAmityCommentsTopic = ({ postID }: { postID: string }) => {
     };
   }, [isConnected, user, community, postID]);
 
-  return { comments: commentsData };
+  return {
+    comments: commentsData,
+    hasMore,
+    onLoadMore: onLoadMoreObj?.onLoadMore,
+  };
 };
 
 export default useAmityCommentsTopic;

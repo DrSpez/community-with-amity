@@ -14,8 +14,10 @@ const AmityAuthContext = createContext<AmityAuthState>({
 });
 
 const AmityAuthProvider = ({ children }: { children: React.ReactElement }) => {
-  const userID = "test-user-1";
-  const displayName = "Test User One";
+  // const userID = "test-user-1";
+  // const displayName = "Test User One";
+  const userID = "other-user";
+  const displayName = "Other Test User";
   const { isConnected } = useAmityLogin({ userID, displayName });
 
   const [state, setState] = useState<AmityAuthState>({

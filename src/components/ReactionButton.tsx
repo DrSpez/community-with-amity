@@ -1,26 +1,30 @@
 import React from "react";
 
-import addReactionToPost from "../utils/addReactionToPost";
-import removeReactionFromPost from "../utils/removeReactionFromPost";
-import { ReactionType } from "../types";
+import addReaction from "../utils/addReaction";
+import removeReaction from "../utils/removeReaction";
+import { ReactableReferenceType, ReactionType } from "../types";
 
 const ReactionButton = ({
-  post,
+  referenceID,
+  referenceType,
+  myReactions,
   reactionType,
 }: {
-  post: Amity.Post;
+  referenceID: string;
+  referenceType: ReactableReferenceType;
+  myReactions: string[] | undefined;
   reactionType: ReactionType;
 }) => {
-  const postID = post._id;
-  const likeDone = post.myReactions.includes(reactionType);
+  const likeDone = myReactions?.includes(reactionType);
   const buttonText = likeDone
     ? `Un${reactionType}`
     : reactionType.charAt(0).toUpperCase() + reactionType.slice(1);
   return (
     <button
       onClick={() => {
-        (likeDone ? removeReactionFromPost : addReactionToPost)({
-          postID,
+        (likeDone ? removeReaction : addReaction)({
+          referenceID,
+          referenceType,
           reactionType,
         });
       }}

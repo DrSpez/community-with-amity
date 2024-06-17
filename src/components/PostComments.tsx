@@ -3,13 +3,17 @@ import Comment from "./Comment";
 import useAmityCommentsTopic from "../hooks/useAmityCommentsTopic";
 
 const PostComments = ({ postID }: { postID: string }) => {
-  const { comments } = useAmityCommentsTopic({ postID });
+  const { comments, hasMore, onLoadMore } = useAmityCommentsTopic({ postID });
   return (
     <div>
-      Comments response: {JSON.stringify(comments)}
-      {/* {comments.map((comment) => {
-        <Comment key={comment._id} comment={comment} />;
-      })} */}
+      {comments?.map((comment) => {
+        return <Comment key={comment.commentId} comment={comment} />;
+      })}
+      {hasMore && (
+        <button className="space-top" onClick={onLoadMore}>
+          Load more
+        </button>
+      )}
     </div>
   );
 };

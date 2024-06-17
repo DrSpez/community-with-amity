@@ -13,6 +13,7 @@
   display: flex;
   width: 100%;
   justify-content: center;
+  padding: 20px 10px;
 }
 .column-third {
   width: 33vw;
@@ -30,7 +31,7 @@
 .space-left {
   margin-left: 8px;
 }
-.post-container {
+.post-container, .comment-container {
   display: flex;
   flex-direction: column;
   background: white;
@@ -45,6 +46,9 @@
 
 .space-top {
   margin-top: 8px;
+}
+.space-bottom {
+  margin-bottom: 8px;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

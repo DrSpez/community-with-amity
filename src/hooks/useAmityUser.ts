@@ -2,15 +2,15 @@ import { UserRepository } from "@amityco/ts-sdk";
 import { useEffect, useState } from "react";
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
 
-const useAmityUser = () => {
+const useAmityUser = ({ userID }: { userID: string | undefined }) => {
   const [response, setResponse] = useState<Amity.LiveObject<Amity.User>>();
-  const { isConnected, userID } = useAmityAuthState();
+  const { isConnected } = useAmityAuthState();
 
   let unsubscribe: () => void;
 
   useEffect(() => {
-    if (isConnected) {
-      unsubscribe = UserRepository.getUser(String(userID), (response) => {
+    if (isConnected && userID) {
+      unsubscribe = UserRepository.getUser(userID, (response) => {
         setResponse(response);
       });
       return () => {
