@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import ReactionButton from "./ReactionButton";
 
 const Row = ({ name, value }: { name: string; value: string }) => {
   return (
@@ -26,6 +27,7 @@ const Post = ({
           <Row name="Comments count" value={post.commentsCount} />
         </tbody>
       </table>
+      <ReactionButton post={post} reactionType="like" />
       {showDetailsLink && (
         <button
           className="space-top"

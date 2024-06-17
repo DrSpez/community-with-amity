@@ -10,7 +10,7 @@ const PostCreator = ({ userID, tags }: { userID: string; tags: string[] }) => {
     }
   }, [text]);
   return (
-    <div className="row-container space-top">
+    <div className="space-top">
       <p className="white-text">Create post:</p>
       <input
         className="space-left"
