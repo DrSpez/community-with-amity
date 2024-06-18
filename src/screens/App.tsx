@@ -9,6 +9,7 @@ import Post from "../components/Post";
 import PostCreator from "../components/PostCreator";
 import UserInfo from "../components/UserInfo";
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
+import useAmityJoinCommunity from "../hooks/useAmityJoinCommunity";
 
 const initAmityClient = () =>
   // Only required to do once in the lifetime of the application
@@ -22,6 +23,9 @@ function App() {
     targetId: AMITY_COMMUNITY_ID,
   });
 
+  const { isJoined } = useAmityJoinCommunity(AMITY_COMMUNITY_ID as string)
+  console.log('isJoined: ', isJoined);
+  
   if (!userID || !displayName) return null;
   const tags = [userID, "06/11/2024"];
   return (
@@ -45,7 +49,7 @@ function App() {
             );
           })}
           {hasMore && (
-            <button onClick={onLoadMore} className="space-top">
+            <button onClick={() => onLoadMore()} className="space-top">
               Load more
             </button>
           )}
