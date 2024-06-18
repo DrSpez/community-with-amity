@@ -8,37 +8,13 @@ import {
 import { useEffect, useState } from "react";
 
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
+import useAmityCommunity from "./useAmityCommunity";
+import { AMITY_COMMUNITY_ID } from "../config";
 
 const disposers: Amity.Unsubscriber[] = [];
 let isSubscribed = false;
 
-const subscribePostTopic = (targetType: string, targetId: string) => {
-  if (isSubscribed) return;
 
-  if (targetType === "user") {
-    const user = {} as Amity.User; // use getUser to get user by targetId
-    disposers.push(
-      subscribeTopic(getUserTopic(user, SubscriptionLevels.POST), () => {
-        // use callback to handle errors with event subscription
-      })
-    );
-    isSubscribed = true;
-    return;
-  }
-
-  if (targetType === "community") {
-    const community = {} as Amity.Community; // use getCommunity to get community by targetId
-    disposers.push(
-      subscribeTopic(
-        getCommunityTopic(community, SubscriptionLevels.POST),
-        () => {
-          // use callback to handle errors with event subscription
-        }
-      )
-    );
-    isSubscribed = true;
-  }
-};
 
 const useAmityPostsTopic = ({
   targetId,
@@ -52,6 +28,35 @@ const useAmityPostsTopic = ({
   const [onLoadMoreObj, setOnLoadMoreObj] = useState<any>({});
 
   const { isConnected } = useAmityAuthState();
+  const { community } = useAmityCommunity({ communityID: AMITY_COMMUNITY_ID });
+
+  const subscribePostTopic = (targetType: string, targetId: string,) => {
+    if (isSubscribed) return;
+  
+    if (targetType === "user") {
+      const user = {} as Amity.User; // use getUser to get user by targetId
+      disposers.push(
+        subscribeTopic(getUserTopic(user, SubscriptionLevels.POST), () => {
+          // use callback to handle errors with event subscription
+        })
+      );
+      isSubscribed = true;
+      return;
+    }
+  
+    if (targetType === "community") {
+      // const community = {} as Amity.Community; // use getCommunity to get community by targetId
+      disposers.push(
+        subscribeTopic(
+          getCommunityTopic(community as Amity.Community, SubscriptionLevels.POST),
+          () => {
+            // use callback to handle errors with event subscription
+          }
+        )
+      );
+      isSubscribed = true;
+    }
+  };
 
   useEffect(() => {
     if (isConnected) {
@@ -78,10 +83,11 @@ const useAmityPostsTopic = ({
            * this is only required if you want real time updates for each
            * community in the collection
            */
-          subscribePostTopic(targetType, targetId);
         }
       );
-
+      if (community) {
+        subscribePostTopic(targetType, targetId);
+      }
       /*
        * if you only wish to get a collection or list of paginated posts without
        * any real time updates you can unsubscribe immediately after you call the
@@ -93,7 +99,7 @@ const useAmityPostsTopic = ({
     return () => {
       disposers.forEach((fn) => fn());
     };
-  }, [isConnected]);
+  }, [isConnected, community]);
 
   return { posts, hasMore, onLoadMore: onLoadMoreObj.func };
 };

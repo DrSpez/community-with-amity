@@ -1,6 +1,7 @@
 import {
   CommentRepository,
   getCommunityTopic,
+  getPostTopic,
   getUserTopic,
   subscribeTopic,
   SubscriptionLevels,
@@ -10,6 +11,7 @@ import { AMITY_COMMUNITY_ID } from "../config";
 import useAmityCommunity from "./useAmityCommunity";
 import useAmityUser from "./useAmityUser";
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
+import useAmityPostTopic from "./useAmityPostTopic";
 
 const disposers: Amity.Unsubscriber[] = [];
 let isSubscribed = false;
@@ -59,6 +61,7 @@ const useAmityCommentsTopic = ({ postID }: { postID: string }) => {
   const { isConnected, userID } = useAmityAuthState();
   const { user } = useAmityUser({ userID });
   const { community } = useAmityCommunity({ communityID: AMITY_COMMUNITY_ID });
+  const { post } = useAmityPostTopic({ postID: postID || "" });
 
   useEffect(() => {
     if (isConnected && user && community) {
@@ -154,14 +157,18 @@ const useAmityCommentsTopic = ({ postID }: { postID: string }) => {
           setCommentsData(comments);
           setHasMore(hasNextPage || false);
           setOnLoadMoreObj({ onLoadMore: onNextPage });
+
+
           /*
            * this is only required if you want real time updates for each
            * community in the collection
            */
-          subscribeCommentTopic(postID, "community", user, community); // FIXME: should this be communityID? Docs have postID - typo?
+          // subscribeCommentTopic(postID, "community", user, community); // FIXME: should this be communityID? Docs have postID - typo?
         }
       );
-
+      if (post) {
+        subscribeTopic(getPostTopic(post, SubscriptionLevels.COMMENT));
+      }
       /*
        * if you only wish to get a collection or list of paginated comments without
        * any real time updates you can unsubscribe immediately after you call the
