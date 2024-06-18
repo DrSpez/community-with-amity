@@ -6,7 +6,7 @@ import PostCreator from "./PostCreator";
 import UserInfo from "./UserInfo";
 import { AMITY_COMMUNITY_ID } from "../config";
 
-import useAmityPostsTopic from "../hooks/useAmityCommunityPostsTopic";
+import useAmityCommunityPostsTopic from "../hooks/useAmityCommunityPostsTopic";
 
 interface Props {
   userID: string;
@@ -20,7 +20,7 @@ const Feed = ({ userID, displayName, feedType }: Props) => {
   const getTodayFeedTags = useMemo(() => [todayTag], [todayTag]);
   const getUserFeedTags = useMemo(() => [userID], [userID]);
 
-  const { posts, hasMore, onLoadMore } = useAmityPostsTopic({
+  const { posts, hasMore, onLoadMore } = useAmityCommunityPostsTopic({
     communityID: AMITY_COMMUNITY_ID,
     tags: feedType === "user" ? getUserFeedTags : getTodayFeedTags,
   });

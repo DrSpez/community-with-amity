@@ -1,37 +1,45 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
+
 import useAmityLogin from "../hooks/useAmityLogin";
+import useAmityJoinCommunity from "../hooks/useAmityJoinCommunity";
+import { AMITY_COMMUNITY_ID } from "../config";
 
 interface AmityAuthState {
   userID: string | undefined;
   displayName: string | undefined;
   isConnected: boolean;
+  isJoinedCommunity: boolean;
 }
 
-const AmityAuthContext = createContext<AmityAuthState>({
+const initialState: AmityAuthState = {
   userID: undefined,
   displayName: undefined,
   isConnected: false,
-});
+  isJoinedCommunity: false,
+};
+const AmityAuthContext = createContext<AmityAuthState>(initialState);
 
 const AmityAuthProvider = ({ children }: { children: React.ReactElement }) => {
-  // const userID = "test-user-1";
-  // const displayName = "Test User One";
-  const userID = "other-user";
-  const displayName = "Other Test User";
+  const userID = "test-user-1";
+  const displayName = "Test User One";
+  // const userID = "other-user";
+  // const displayName = "Other Test User";
   const { isConnected } = useAmityLogin({ userID, displayName });
-
-  const [state, setState] = useState<AmityAuthState>({
-    userID,
-    displayName,
+  // Join community automatically
+  const { isJoinedCommunity } = useAmityJoinCommunity({
     isConnected,
+    communityID: AMITY_COMMUNITY_ID,
   });
 
-  useEffect(() => {
-    setState({ ...state, isConnected });
-  }, [isConnected]);
-
   return (
-    <AmityAuthContext.Provider value={state}>
+    <AmityAuthContext.Provider
+      value={{
+        userID,
+        displayName,
+        isConnected,
+        isJoinedCommunity,
+      }}
+    >
       {children}
     </AmityAuthContext.Provider>
   );

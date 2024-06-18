@@ -4,8 +4,7 @@ import "../App.css";
 import { useState } from "react";
 import { Client, API_REGIONS } from "@amityco/ts-sdk";
 
-import { AMITY_API_KEY, AMITY_COMMUNITY_ID } from "../config";
-import useAmityPostsTopic from "../hooks/useAmityCommunityPostsTopic";
+import { AMITY_API_KEY } from "../config";
 
 import Feed from "../components/Feed";
 import FeedSwitchButton from "../components/FeedSwitchButton";
@@ -15,7 +14,8 @@ import { FeedType } from "../types";
 const initAmityClient = () =>
   // Only required to do once in the lifetime of the application
   Client.createClient(AMITY_API_KEY, API_REGIONS.US); // SG is the default
-const client = initAmityClient();
+
+initAmityClient();
 
 function App() {
   const { userID, displayName } = useAmityAuthState();
