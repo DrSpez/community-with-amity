@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import addReaction from "../utils/addReaction";
 import removeReaction from "../utils/removeReaction";
@@ -15,19 +15,25 @@ const ReactionButton = ({
   myReactions: string[] | undefined;
   reactionType: ReactionType;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const likeDone = myReactions?.includes(reactionType);
   const buttonText = likeDone
     ? `Un${reactionType}`
     : reactionType.charAt(0).toUpperCase() + reactionType.slice(1);
   return (
     <button
-      onClick={() => {
-        (likeDone ? removeReaction : addReaction)({
-          referenceID,
-          referenceType,
-          reactionType,
-        });
+      onClick={async () => {
+        if (!isLoading) {
+          setIsLoading(true);
+          await (likeDone ? removeReaction : addReaction)({
+            referenceID,
+            referenceType,
+            reactionType,
+          });
+          setIsLoading(false);
+        }
       }}
+      disabled={isLoading}
     >
       {buttonText}
     </button>

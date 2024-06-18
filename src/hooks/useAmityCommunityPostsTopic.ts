@@ -8,26 +8,32 @@ import {
 import { useEffect, useState } from "react";
 
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
+import useAmityCommunity from "./useAmityCommunity";
 
-const disposers: Amity.Unsubscriber[] = [];
-let isSubscribed = false;
+const useAmityCommunityPostsTopic = ({
+  communityID,
+  tags,
+}: {
+  communityID: string;
+  tags: string[];
+}) => {
+  const [posts, setPosts] = useState<Amity.Post[]>();
+  const [hasMore, setHasMore] = useState<boolean>();
+  const [onLoadMoreObj, setOnLoadMoreObj] = useState<any>({});
 
-const subscribePostTopic = (targetType: string, targetId: string) => {
-  if (isSubscribed) return;
+  const { isConnected } = useAmityAuthState();
+  const { community } = useAmityCommunity({ communityID });
 
-  if (targetType === "user") {
-    const user = {} as Amity.User; // use getUser to get user by targetId
-    disposers.push(
-      subscribeTopic(getUserTopic(user, SubscriptionLevels.POST), () => {
-        // use callback to handle errors with event subscription
-      })
-    );
-    isSubscribed = true;
-    return;
-  }
+  const disposers: Amity.Unsubscriber[] = [];
+  let isSubscribed = false;
 
-  if (targetType === "community") {
-    const community = {} as Amity.Community; // use getCommunity to get community by targetId
+  const subscribeCommunityTopic = ({
+    community,
+  }: {
+    community: Amity.Community;
+  }) => {
+    if (isSubscribed) return;
+
     disposers.push(
       subscribeTopic(
         getCommunityTopic(community, SubscriptionLevels.POST),
@@ -37,24 +43,10 @@ const subscribePostTopic = (targetType: string, targetId: string) => {
       )
     );
     isSubscribed = true;
-  }
-};
-
-const useAmityPostsTopic = ({
-  targetId,
-  targetType,
-}: {
-  targetId: string;
-  targetType: string;
-}) => {
-  const [posts, setPosts] = useState<Amity.Post[]>();
-  const [hasMore, setHasMore] = useState<boolean>();
-  const [onLoadMoreObj, setOnLoadMoreObj] = useState<any>({});
-
-  const { isConnected } = useAmityAuthState();
+  };
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && community) {
       /*
        * Possible params for getPosts:
        * targetType: 'global' | 'user' | 'community' | 'my' | 'content';
@@ -69,16 +61,21 @@ const useAmityPostsTopic = ({
        * page?: { limit: number; before?: string; after?: string };
        */
       const unsubscribe = PostRepository.getPosts(
-        { targetId, targetType },
+        { targetId: communityID, targetType: "community", tags },
         ({ data: posts, onNextPage, hasNextPage, loading, error }) => {
           setPosts(posts);
           setHasMore(hasNextPage);
-          setOnLoadMoreObj({ func: onNextPage });
+          setOnLoadMoreObj({
+            func: () => {
+              // NOTE: have to wrap this function with () => onNextPage?.(), if used directly like onClick={onNextPage} it does not work properly
+              onNextPage?.();
+            },
+          });
           /*
            * this is only required if you want real time updates for each
            * community in the collection
            */
-          subscribePostTopic(targetType, targetId);
+          subscribeCommunityTopic({ community });
         }
       );
 
@@ -93,9 +90,9 @@ const useAmityPostsTopic = ({
     return () => {
       disposers.forEach((fn) => fn());
     };
-  }, [isConnected]);
+  }, [isConnected, community, tags]);
 
   return { posts, hasMore, onLoadMore: onLoadMoreObj.func };
 };
 
-export default useAmityPostsTopic;
+export default useAmityCommunityPostsTopic;
