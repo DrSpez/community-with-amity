@@ -2,8 +2,8 @@ import Comment from "./Comment";
 
 import useAmityCommentsTopic from "../hooks/useAmityCommentsTopic";
 
-const PostComments = ({ postID }: { postID: string }) => {
-  const { comments, hasMore, onLoadMore } = useAmityCommentsTopic({ postID });
+const PostComments = ({ post }: { post: Amity.Post }) => {
+  const { comments, hasMore, onLoadMore } = useAmityCommentsTopic({ post });
   return (
     <div>
       {comments?.map((comment) => {

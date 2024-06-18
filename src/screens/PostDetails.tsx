@@ -23,7 +23,7 @@ const PostDetails = () => {
           <p>Post ID: {postID} </p>
           <Post post={post} />
           <CommentCreator postID={postID} />
-          <PostComments postID={postID} />
+          <PostComments post={post} />
         </div>
       </div>
     </div>

@@ -25,7 +25,8 @@ const Post = ({
       <div className="row-container">
         <table>
           <tbody>
-            <Row name="Creator" value={post.creator.displayName} />
+            {/* // FIXME: remove the ?., there has to be creator */}
+            <Row name="Creator" value={post.creator?.displayName} />
             <Row name="Text" value={post.data.text} />
             <Row name="Reactions count" value={post.reactionsCount} />
             <Row name="Comments count" value={post.commentsCount} />
