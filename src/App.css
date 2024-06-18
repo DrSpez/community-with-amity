@@ -50,6 +50,9 @@
 .space-bottom {
   margin-bottom: 8px;
 }
+.justify-space-between {
+  justify-content: space-between;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

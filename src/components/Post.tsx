@@ -22,7 +22,7 @@ const Post = ({
   const navigate = useNavigate();
   return (
     <div className="post-container">
-      <div className="row-container">
+      <div className="row-container justify-space-between">
         <table>
           <tbody>
             {/* // FIXME: remove the ?., there has to be creator */}
