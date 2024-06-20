@@ -20,40 +20,56 @@ const Post = ({
   showRemoveButton?: boolean;
 }) => {
   const navigate = useNavigate();
+  const {
+    _id: postID,
+    creator,
+    data: { text },
+    reactionsCount,
+    commentsCount,
+    myReactions,
+  } = post;
   return (
     <div className="post-container">
       <div className="row-container justify-space-between">
         <table>
           <tbody>
             {/* // FIXME: remove the ?., there has to be creator */}
-            <Row name="Creator" value={post.creator?.displayName} />
-            <Row name="Text" value={post.data.text} />
-            <Row name="Reactions count" value={post.reactionsCount} />
-            <Row name="Comments count" value={post.commentsCount} />
+            <Row name="Creator" value={creator?.displayName} />
+            <Row name="Text" value={text} />
+            <Row name="Reactions count" value={reactionsCount} />
+            <Row name="Comments count" value={commentsCount} />
           </tbody>
         </table>
         {showRemoveButton && (
           <button
             className="remove-button"
             onClick={() => {
-              deletePost({ postID: post._id, hardDelete: true });
+              deletePost({ postID, hardDelete: true });
             }}
           >
             X
           </button>
         )}
       </div>
-      <ReactionButton
-        referenceID={post._id}
-        referenceType={"post"}
-        myReactions={post.myReactions}
-        reactionType="like"
-      />
+      <div className="row-container">
+        <ReactionButton
+          referenceID={postID}
+          referenceType="post"
+          reactionType="like"
+          myReactions={myReactions}
+        />
+        <ReactionButton
+          referenceID={postID}
+          referenceType="post"
+          reactionType="frown"
+          myReactions={myReactions}
+        />
+      </div>
       {showDetailsLink && (
         <button
           className="space-top"
           onClick={() => {
-            navigate(`/post/${post._id}`);
+            navigate(`/post/${postID}`);
           }}
         >
           Post details

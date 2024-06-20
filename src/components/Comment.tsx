@@ -32,12 +32,20 @@ const Comment = ({ comment }: { comment: Amity.InternalComment }) => {
           </button>
         )}
       </div>
-      <ReactionButton
-        referenceID={commentID}
-        referenceType="comment"
-        reactionType="like"
-        myReactions={myReactions}
-      />
+      <div className="row-container">
+        <ReactionButton
+          referenceID={commentID}
+          referenceType="comment"
+          reactionType="like"
+          myReactions={myReactions}
+        />
+        <ReactionButton
+          referenceID={commentID}
+          referenceType="comment"
+          reactionType="frown"
+          myReactions={myReactions}
+        />
+      </div>
     </div>
   );
 };
