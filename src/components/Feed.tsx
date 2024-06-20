@@ -27,8 +27,8 @@ const Feed = ({ userID, displayName, feedType }: Props) => {
   return (
     <div className="center-container">
       <div className="column-third">
-        <UserInfo userID={userID} displayName={displayName} />
-        <PostCreator userID={userID} tags={createPostTags} />
+        <UserInfo />
+        <PostCreator tags={createPostTags} />
         {posts?.map((post) => {
           return (
             <Post

@@ -1,10 +1,7 @@
-const UserInfo = ({
-  userID,
-  displayName,
-}: {
-  userID: string;
-  displayName: string;
-}) => {
+import { useAmityAuthState } from "../providers/AmityAuthProvider";
+
+const UserInfo = () => {
+  const { userID, displayName } = useAmityAuthState();
   return (
     <div className="space-top white-text left-text">
       <table>

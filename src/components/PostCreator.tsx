@@ -2,13 +2,14 @@ import { useCallback, useState } from "react";
 
 import createTextPost from "../utils/createPost";
 
-const PostCreator = ({ userID, tags }: { userID: string; tags: string[] }) => {
-  const [text, setText] = useState<string>();
-  const handleCreatePost = useCallback(() => {
+const PostCreator = ({ tags }: { tags: string[] }) => {
+  const [text, setText] = useState<string>("");
+  const handleCreatePost = useCallback(async () => {
     if (text) {
-      createTextPost({ text, tags });
+      await createTextPost({ text, tags });
+      setText("");
     }
-  }, [text]);
+  }, [text, tags]);
   return (
     <div className="space-top">
       <p className="white-text">Create post:</p>
