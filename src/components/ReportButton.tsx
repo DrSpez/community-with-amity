@@ -7,7 +7,6 @@ const ReportButton = ({
   referenceType,
   referenceID,
 }: {
-  isAuthor: boolean;
   referenceType: ReportableReference;
   referenceID: string;
 }) => {

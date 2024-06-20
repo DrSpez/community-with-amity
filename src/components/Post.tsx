@@ -4,6 +4,7 @@ import deletePost from "../utils/deletePost";
 import ReportButton from "./ReportButton";
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
 import useAmityEntityReported from "../hooks/useAmityEntityReported";
+import { MAX_FLAGS_COUNT } from "../config";
 
 const Row = ({ name, value }: { name: string; value: string }) => {
   return (
@@ -41,6 +42,8 @@ const Post = ({
     referenceID: postID,
   });
   const showReportButton = !isAuthor && !isReportedByMe;
+  const isPostHidden = flagCount >= MAX_FLAGS_COUNT;
+  if (isPostHidden) return null;
   return (
     <div className="post-container">
       <div className="row-container justify-space-between">
@@ -79,11 +82,7 @@ const Post = ({
           myReactions={myReactions}
         />
         {showReportButton && (
-          <ReportButton
-            isAuthor={isAuthor}
-            referenceType="post"
-            referenceID={postID}
-          />
+          <ReportButton referenceType="post" referenceID={postID} />
         )}
       </div>
       {showDetailsLink && (
