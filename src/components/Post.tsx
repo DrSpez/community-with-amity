@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import ReactionButton from "./ReactionButton";
 import deletePost from "../utils/deletePost";
+import ReportButton from "./ReportButton";
+import { useAmityAuthState } from "../providers/AmityAuthProvider";
+import useAmityEntityReported from "../hooks/useAmityEntityReported";
 
 const Row = ({ name, value }: { name: string; value: string }) => {
   return (
@@ -13,12 +16,12 @@ const Row = ({ name, value }: { name: string; value: string }) => {
 const Post = ({
   post,
   showDetailsLink,
-  showRemoveButton,
 }: {
   post: Amity.Post;
   showDetailsLink?: boolean;
-  showRemoveButton?: boolean;
 }) => {
+  const { userID } = useAmityAuthState();
+
   const navigate = useNavigate();
   const {
     _id: postID,
@@ -27,7 +30,17 @@ const Post = ({
     reactionsCount,
     commentsCount,
     myReactions,
+    flagCount,
   } = post;
+
+  const isAuthor = post.creator?.userId === userID;
+
+  const { isReportedByMe } = useAmityEntityReported({
+    flagCount,
+    referenceType: "post",
+    referenceID: postID,
+  });
+  const showReportButton = !isAuthor && !isReportedByMe;
   return (
     <div className="post-container">
       <div className="row-container justify-space-between">
@@ -38,9 +51,10 @@ const Post = ({
             <Row name="Text" value={text} />
             <Row name="Reactions count" value={reactionsCount} />
             <Row name="Comments count" value={commentsCount} />
+            <Row name="Flag count" value={flagCount} />
           </tbody>
         </table>
-        {showRemoveButton && (
+        {isAuthor && (
           <button
             className="remove-button"
             onClick={() => {
@@ -64,6 +78,13 @@ const Post = ({
           reactionType="frown"
           myReactions={myReactions}
         />
+        {showReportButton && (
+          <ReportButton
+            isAuthor={isAuthor}
+            referenceType="post"
+            referenceID={postID}
+          />
+        )}
       </div>
       {showDetailsLink && (
         <button

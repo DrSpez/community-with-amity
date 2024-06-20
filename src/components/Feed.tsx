@@ -30,13 +30,11 @@ const Feed = ({ userID, displayName, feedType }: Props) => {
         <UserInfo userID={userID} displayName={displayName} />
         <PostCreator userID={userID} tags={createPostTags} />
         {posts?.map((post) => {
-          const isOwnPost = post.creator?.userId === userID;
           return (
             <Post
               key={`${post._id}-${post.creator.userId}`}
               post={post}
               showDetailsLink
-              showRemoveButton={isOwnPost}
             />
           );
         })}

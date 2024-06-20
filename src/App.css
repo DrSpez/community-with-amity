@@ -40,8 +40,21 @@
   padding: 10px 20px;
   margin-top: 10px;
 }
-.remove-button {
+
+button {
+  cursor: pointer;
   max-height: 20px;
+}
+.remove-button, .report-button {
+  color: white;
+  border-width: 0;
+}
+
+.remove-button {
+  background-color: hsl(0, 100%, 75%);
+}
+.report-button {
+  background-color: rgb(134, 122, 55);
 }
 
 .space-top {

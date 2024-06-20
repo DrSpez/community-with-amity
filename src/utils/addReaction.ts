@@ -1,12 +1,12 @@
 import { ReactionRepository } from "@amityco/ts-sdk";
-import { ReactableReferenceType, ReactionType } from "../types";
+import { ReactableReference, ReactionType } from "../types";
 
 const addReaction = async ({
   referenceType,
   referenceID,
   reactionType,
 }: {
-  referenceType: ReactableReferenceType;
+  referenceType: ReactableReference;
   referenceID: string;
   reactionType: ReactionType;
 }) => {

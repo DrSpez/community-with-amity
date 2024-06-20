@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import addReaction from "../utils/addReaction";
 import removeReaction from "../utils/removeReaction";
-import { ReactableReferenceType, ReactionType } from "../types";
+import { ReactableReference, ReactionType } from "../types";
 
 const ReactionButton = ({
   referenceID,
@@ -11,7 +11,7 @@ const ReactionButton = ({
   reactionType,
 }: {
   referenceID: string;
-  referenceType: ReactableReferenceType;
+  referenceType: ReactableReference;
   myReactions: string[] | undefined;
   reactionType: ReactionType;
 }) => {
