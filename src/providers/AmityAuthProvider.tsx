@@ -5,6 +5,7 @@ import useAmityJoinCommunity from "../hooks/useAmityJoinCommunity";
 import { AMITY_COMMUNITY_ID } from "../config";
 
 interface AmityAuthState {
+  authToken: string | undefined;
   userID: string | undefined;
   displayName: string | undefined;
   isConnected: boolean;
@@ -12,6 +13,7 @@ interface AmityAuthState {
 }
 
 const initialState: AmityAuthState = {
+  authToken: undefined,
   userID: undefined,
   displayName: undefined,
   isConnected: false,
@@ -27,7 +29,7 @@ const AmityAuthProvider = ({ children }: { children: React.ReactElement }) => {
 
   const userID = "third-user";
   const displayName = "Third Test User";
-  const { isConnected } = useAmityLogin({ userID, displayName });
+  const { authToken, isConnected } = useAmityLogin({ userID, displayName });
   // Join community automatically
   const { isJoinedCommunity } = useAmityJoinCommunity({
     isConnected,
@@ -37,6 +39,7 @@ const AmityAuthProvider = ({ children }: { children: React.ReactElement }) => {
   return (
     <AmityAuthContext.Provider
       value={{
+        authToken,
         userID,
         displayName,
         isConnected,
