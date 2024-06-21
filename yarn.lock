@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@amityco/ts-sdk@^6.26.3":
-  version "6.26.3"
-  resolved "https://registry.yarnpkg.com/@amityco/ts-sdk/-/ts-sdk-6.26.3.tgz#830dad6dabc181bf534e363f72235e0e8cd19d98"
-  integrity sha512-Fw9g0hLVs8GYUBHVdSQpV/n7JZRRFkFolHTKh42w4aVy7dwYRj0NhiRtQpSNfIxCoQWHG6fwL7ttC3L1ZWheOQ==
+"@amityco/ts-sdk@^6.27.0":
+  version "6.27.0"
+  resolved "https://registry.yarnpkg.com/@amityco/ts-sdk/-/ts-sdk-6.27.0.tgz#2d7f73ae4202fe1c47a67119ed12778d82732646"
+  integrity sha512-6I55XYqhet6MDlB/qw9YunFO1BD2TwZSr2BBZ3+dWsBjBVp8BTDr7rPy74gpoVmPWRVbD4XTRM1c8dPeWeLEPQ==
   dependencies:
     agentkeepalive "^4.2.1"
     axios "^1.2.3"
