@@ -21,7 +21,7 @@ const PostDetails = () => {
       <div className="center-container">
         <div className="column-third">
           <p>Post ID: {postID} </p>
-          <Post post={post} />
+          <Post post={post} detailedView />
           <CommentCreator postID={postID} />
           <PostComments post={post} />
         </div>

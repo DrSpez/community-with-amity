@@ -16,10 +16,10 @@ const Row = ({ name, value }: { name: string; value: string }) => {
 };
 const Post = ({
   post,
-  showDetailsLink,
+  detailedView,
 }: {
   post: Amity.Post;
-  showDetailsLink?: boolean;
+  detailedView?: boolean;
 }) => {
   const { userID } = useAmityAuthState();
 
@@ -32,6 +32,7 @@ const Post = ({
     commentsCount,
     myReactions,
     flagCount,
+    metaData: { questionText = "" } = {},
   } = post;
 
   const isAuthor = post.creator?.userId === userID;
@@ -41,6 +42,8 @@ const Post = ({
     referenceType: "post",
     referenceID: postID,
   });
+  const showDetailsLink = !detailedView;
+  const showQuestionPrompt = detailedView;
   const showReportButton = !isAuthor && !isReportedByMe;
   const isPostHidden = flagCount >= MAX_FLAGS_COUNT;
   if (isPostHidden) return null;
@@ -49,9 +52,9 @@ const Post = ({
       <div className="row-container justify-space-between">
         <table>
           <tbody>
-            {/* // FIXME: remove the ?., there has to be creator */}
-            <Row name="Creator" value={creator?.displayName} />
-            <Row name="Text" value={text} />
+            <Row name="Creator" value={creator.displayName} />
+            {showQuestionPrompt && <Row name="Question" value={questionText} />}
+            <Row name="Answer" value={text} />
             <Row name="Reactions count" value={reactionsCount} />
             <Row name="Comments count" value={commentsCount} />
             <Row name="Flag count" value={flagCount} />

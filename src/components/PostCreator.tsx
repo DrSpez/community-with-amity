@@ -4,9 +4,10 @@ import createTextPost from "../utils/createPost";
 
 const PostCreator = ({ tags }: { tags: string[] }) => {
   const [text, setText] = useState<string>("");
+  const questionText = "What will be your response?";
   const handleCreatePost = useCallback(async () => {
     if (text) {
-      await createTextPost({ text, tags });
+      await createTextPost({ text, questionText, tags });
       setText("");
     }
   }, [text, tags]);

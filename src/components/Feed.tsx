@@ -31,11 +31,7 @@ const Feed = ({ userID, displayName, feedType }: Props) => {
         <PostCreator tags={createPostTags} />
         {posts?.map((post) => {
           return (
-            <Post
-              key={`${post._id}-${post.creator.userId}`}
-              post={post}
-              showDetailsLink
-            />
+            <Post key={`${post._id}-${post.creator.userId}`} post={post} />
           );
         })}
         {hasMore && (

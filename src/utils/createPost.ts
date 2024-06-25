@@ -4,9 +4,11 @@ import { AMITY_COMMUNITY_ID } from "../config";
 
 const createTextPost = async ({
   text,
+  questionText,
   tags,
 }: {
   text: string;
+  questionText: string;
   tags?: string[];
 }) => {
   const newPost = {
@@ -16,6 +18,9 @@ const createTextPost = async ({
     },
     targetType: "community",
     targetId: AMITY_COMMUNITY_ID,
+    metaData: {
+      questionText,
+    },
   };
 
   const { data: post } = await PostRepository.createPost(newPost);
