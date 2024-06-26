@@ -7,6 +7,7 @@ import UserInfo from "./UserInfo";
 import { AMITY_COMMUNITY_ID } from "../config";
 
 import useAmityCommunityPostsTopic from "../hooks/useAmityCommunityPostsTopic";
+import useAmityPostCount from "../hooks/useAmityPostCount";
 
 interface Props {
   userID: string;
@@ -14,21 +15,28 @@ interface Props {
   feedType: FeedType;
 }
 const Feed = ({ userID, displayName, feedType }: Props) => {
-  const todayTag = "06/11/2024"; // TODO: get the today date. In real implementation we might want to pay attention to users' timezone and also still show yesterdays posts up until 3am local
+  const todayTag = "06/26/2024";
 
   const createPostTags = useMemo(() => [userID, todayTag], [userID, todayTag]);
   const getTodayFeedTags = useMemo(() => [todayTag], [todayTag]);
   const getUserFeedTags = useMemo(() => [userID], [userID]);
+  const tags = feedType === "user" ? getUserFeedTags : getTodayFeedTags;
 
   const { posts, hasMore, onLoadMore } = useAmityCommunityPostsTopic({
     communityID: AMITY_COMMUNITY_ID,
-    tags: feedType === "user" ? getUserFeedTags : getTodayFeedTags,
+    tags,
   });
+  const postCount = useAmityPostCount({ tags });
   return (
     <div className="center-container">
       <div className="column-third">
         <UserInfo />
         <PostCreator tags={createPostTags} />
+        <p className="white-text">
+          Post count: {postCount}
+          <br />
+          for tags: {JSON.stringify(tags)}
+        </p>
         {posts?.map((post) => {
           return (
             <Post key={`${post._id}-${post.creator.userId}`} post={post} />

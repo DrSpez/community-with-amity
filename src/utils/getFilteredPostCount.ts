@@ -1,8 +1,10 @@
+import { AMITY_COMMUNITY_ID } from "../config";
+
 const getFilteredPostCount = async ({
-  authToken,
+  accessToken,
   tags,
 }: {
-  authToken: string;
+  accessToken: string;
   tags?: string[];
 }) => {
   const basePath = "https://beta.amity.services/api/v3/search/posts";
@@ -15,15 +17,14 @@ const getFilteredPostCount = async ({
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: authToken,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     data = await response.json();
   } catch (err) {
     console.error(err);
   }
-  console.log("!! beta api /search/posts", { authToken, url, data });
-  return -1;
+  return data.found;
 };
 
 export default getFilteredPostCount;

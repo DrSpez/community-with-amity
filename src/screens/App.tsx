@@ -9,7 +9,6 @@ import { AMITY_API_KEY } from "../config";
 import Feed from "../components/Feed";
 import FeedSwitchButton from "../components/FeedSwitchButton";
 import { useAmityAuthState } from "../providers/AmityAuthProvider";
-import getFilteredPostCount from "../utils/getFilteredPostCount";
 import { FeedType } from "../types";
 
 const initAmityClient = () =>
@@ -19,19 +18,9 @@ const initAmityClient = () =>
 initAmityClient();
 
 function App() {
-  const { authToken, userID, displayName } = useAmityAuthState();
+  const { userID, displayName } = useAmityAuthState();
   const [feedType, setFeedType] = useState<FeedType>("today");
-  const [postCount, setPostCount] = useState<number>();
 
-  useEffect(() => {
-    if (authToken) {
-      const getCounts = async () => {
-        const count = await getFilteredPostCount({ authToken });
-        setPostCount(count);
-      };
-      getCounts();
-    }
-  }, [authToken]);
   if (!userID || !displayName) return null;
   return (
     <div className="App">
@@ -51,7 +40,6 @@ function App() {
             setFeedType("user");
           }}
         />
-        <p className="white-text">Post count: {postCount}</p>
       </div>
       <Feed userID={userID} displayName={displayName} feedType={feedType} />
     </div>
