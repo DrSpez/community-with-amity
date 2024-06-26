@@ -12,26 +12,30 @@ import { useAmityAuthState } from "../providers/AmityAuthProvider";
 import getFilteredPostCount from "../utils/getFilteredPostCount";
 import { FeedType } from "../types";
 
-const initAmityClient = () =>
-  // Only required to do once in the lifetime of the application
-  Client.createClient(AMITY_API_KEY, API_REGIONS.US); // SG is the default
+// const initAmityClient = () =>
+//   // Only required to do once in the lifetime of the application
+//  Client.createClient(AMITY_API_KEY, API_REGIONS.US); // SG is the default
 
-initAmityClient();
+// initAmityClient();
 
 function App() {
+
+  const client = Client.createClient(AMITY_API_KEY, API_REGIONS.US);
+
+
   const { authToken, userID, displayName } = useAmityAuthState();
   const [feedType, setFeedType] = useState<FeedType>("today");
   const [postCount, setPostCount] = useState<number>();
 
   useEffect(() => {
-    if (authToken) {
+    if (client.token?.accessToken) {
       const getCounts = async () => {
-        const count = await getFilteredPostCount({ authToken });
+        const count = await getFilteredPostCount({ accessToken: client.token?.accessToken as string, tags:['test'] },);
         setPostCount(count);
       };
       getCounts();
     }
-  }, [authToken]);
+  }, [client.token?.accessToken]);
   if (!userID || !displayName) return null;
   return (
     <div className="App">
