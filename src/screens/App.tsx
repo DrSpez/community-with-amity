@@ -20,7 +20,6 @@ initAmityClient();
 function App() {
   const { userID, displayName } = useAmityAuthState();
   const [feedType, setFeedType] = useState<FeedType>("today");
-
   if (!userID || !displayName) return null;
   return (
     <div className="App">

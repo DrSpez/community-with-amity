@@ -33,8 +33,8 @@ const Feed = ({ userID, displayName, feedType }: Props) => {
         <UserInfo />
         <PostCreator tags={createPostTags} />
         <p className="white-text">
-          [BETA API] search by tags: {JSON.stringify(tags)} Post count:{" "}
-          {postCount}
+          {`[BETA API] search by tags: ${JSON.stringify(tags)} Post count:
+          ${postCount}`}
         </p>
         {posts?.map((post) => {
           return (
