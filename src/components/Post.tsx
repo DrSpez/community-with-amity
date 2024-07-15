@@ -32,7 +32,7 @@ const Post = ({
     commentsCount,
     myReactions,
     flagCount,
-    metaData: { questionText = "" } = {},
+    metadata: { questionText = "" } = {},
   } = post;
 
   const isAuthor = post.creator?.userId === userID;

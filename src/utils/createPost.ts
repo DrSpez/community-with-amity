@@ -18,7 +18,7 @@ const createTextPost = async ({
     },
     targetType: "community",
     targetId: AMITY_COMMUNITY_ID,
-    metaData: {
+    metadata: {
       questionText,
     },
   };

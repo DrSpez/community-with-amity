@@ -27,8 +27,8 @@ const AmityAuthProvider = ({ children }: { children: React.ReactElement }) => {
   // const userID = "other-user";
   // const displayName = "Other Test User";
 
-  const userID = "third-user";
-  const displayName = "Third Test User";
+  const userID = "new-user-3";
+  const displayName = "New User 3";
   const { authToken, isConnected } = useAmityLogin({ userID, displayName });
   // Join community automatically
   const { isJoinedCommunity } = useAmityJoinCommunity({

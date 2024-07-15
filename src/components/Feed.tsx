@@ -15,7 +15,7 @@ interface Props {
   feedType: FeedType;
 }
 const Feed = ({ userID, displayName, feedType }: Props) => {
-  const todayTag = "06/26/2024";
+  const todayTag = "07/03/2024";
 
   const createPostTags = useMemo(() => [userID, todayTag], [userID, todayTag]);
   const getTodayFeedTags = useMemo(() => [todayTag], [todayTag]);
@@ -33,8 +33,9 @@ const Feed = ({ userID, displayName, feedType }: Props) => {
         <UserInfo />
         <PostCreator tags={createPostTags} />
         <p className="white-text">
-          {`[BETA API] search by tags: ${JSON.stringify(tags)} Post count:
-          ${postCount}`}
+          [BETA API] by tags: {JSON.stringify(tags)}
+          <br />
+          Post count: {JSON.stringify(postCount)}
         </p>
         {posts?.map((post) => {
           return (
